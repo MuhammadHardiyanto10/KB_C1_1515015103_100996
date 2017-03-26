@@ -1,0 +1,160 @@
+DOMAINS
+nama,jender,pekerjaan,benda,alasan,zat = symbol 
+/*** Nama, jender, pekerjaan, beda, alasan, dan zat merupakan symbol-symbol ***/
+umur=integer
+/*** sedangkan umur berupa integer yang hanya bisa di masukan berupa angka ***/
+PREDICATES
+nondeterm orang(nama, umur, jender, pekerjaan)
+/*** mempunyai predikat orang yang didalamnya mempunyai nama, umur, jender, dan pekerjaan sedangkan nondeterm di awal dia bisa berupa input ataupun output ***/
+nondeterm selingkuh(nama, nama)
+/*** predikat selingkuh dan didalamnya mempunyai nama, dan nama nondeterm di awal bisa berupa input ataupun output ***/
+terbunuh_dengan(nama, benda)
+/*** predikat terbunuh_dengan dan didalamnya berupa nama, dan benda sedangkan nondeterm diawal bisa berupa input ataupun output ***/
+terbunuh(nama)
+/*** predikat terbunuh yang didalamnya berupa nama ***/
+nondeterm pembunuh(nama)
+/*** predikat terbunuh berupa nama dan nondeterm diawal bisa input ataupun output***/
+motif(alasan)
+/*** predikat motif mempunyai alasan***/
+ternodai(nama, zat)
+/*** predikat ternodai mempunyai nama, dan zat ***/
+milik(nama, benda)
+/*** predikat milik mempunyai nama, dan benda ***/
+nondeterm cara_kerja_mirip(benda, benda)
+/*** predikat cara_kerja_mirip mempunyai benda, dan benda sedangkan nondeterm diawal bisa berupa input ataupun output ***/
+nondeterm kemungkinan_milik(nama, benda)
+/*** predikat kemungkinan_milik mempunyai nama dan benda sedangkan nondeterm diawal bisa berupa input ataupun output ***/
+nondeterm dicurigai(nama)
+/*** predikat dicurigai mempunyai nama dan nondeterm di awal bisa berupa input ataupun output ***/
+/* * * Fakta-fakta tentang pembunuhan * * */
+
+CLAUSES
+/***di bawah merupakan fakta-fakta yang tidak diragukan lagi kebenarannya ***/
+orang(budi,55,m,tukang_kayu).
+/*** predikat orang mempunyai nama budi dan berumur 55 dan jender nya man(laki-laki) dan perkerjaannya tukang_kayu ***/
+orang(aldi,25,m,pemain_sepak_bola).
+/*** predikat orang mempunyai nama aldi dan berumur 25 sedangkan jendernya man(laki-laki) dan mempunyai pekrjaan pemain sepak bola ***/
+orang(aldi,25,m,tukang_jagal).
+/*** predikat orang mempunyai nama aldi yang berumur 25 dan jendernya man(laki-laki) dan pekerjaannya tukang jagal ***/
+orang(joni,25,m,pencopet).
+/*** predikat orang mempunyai nama joni yang berumur 25 dan jendernya man(laki-laki) sedangkan pekerjaannya pencopet ***/
+selingkuh(ina,joni).
+/*** diatas memiliki makna yang berupa ina selingkuh dengan joni ***/
+selingkuh(ina,budi).
+/*** diatas memiliki makna yang berupa ina selingkuh dengan budi ***/
+selingkuh(siti,joni).
+/***  diatas memiliki makna yang berupa siti selingkuh dengan joni ***/
+terbunuh_dengan(siti,pentungan).
+/*** diatas memiliki makna yang artinya siti terbunuh dengan pentungan ***/
+terbunuh(siti).
+/*** diatas memiliki makna yang artinya yang terbunuh siti ***/
+motif(uang).
+/*** diatas memiliki makna yang artinya motifnya berupa uang ***/
+motif(cemburu).
+/*** diatas memiliki makna yang artinya motifnya cemburu ***/
+motif(dendam).
+/*** motif di atas memiliki makna yang artinya motifnya berupa dendam ***/
+ternodai(budi, darah).
+/*** dimana budi ternodai dengan darah ***/
+ternodai(siti, darah).
+/*** siti ternodai dengan darah ***/
+ternodai(aldi, lumpur).
+/*** aldi ternodai dengan lumpur ***/
+ternodai(joni, coklat).
+/*** joni ternodai dengan coklat ***/
+ternodai(ina, coklat).
+/*** ina ternodai dengan coklat ***/
+milik(budi,kaki_palsu).
+/*** mempunyai arti budi memiliki kaki palsu ***/
+milik(joni,pistol).
+/*** joni memiliki pistol ***/
+/* * * Basis Pengetahuan * * */
+cara_kerja_mirip(kaki_palsu, pentungan).
+/*** diatas mempunyai arti kaki cara kerjanya mirip dengan pentungan ***/
+cara_kerja_mirip(balok, pentungan).
+/*** balok mempunyai cara kerja mirip dengan pentungan ***/
+cara_kerja_mirip(gunting, pisau).
+/*** gunting mempunyai cara kerja mirip dengan pisau ***/
+cara_kerja_mirip(sepatu_bola, pentungan).
+/*** sepatu mempunyai cara kerja mirip dengan pentungan ***/
+kemungkinan_milik(X,sepatu_bola):-
+/*** dia menanyakan milik siapa yang sepatu bola ***/
+orang(X,_,_,pemain_sepak_bola).
+/*** dan siapa yang mempunyai pekerjaan pemain sepak bola ***/
+kemungkinan_milik(X,gunting):-
+/*** mempunyai arti milik siapa gunting tersebut ***/
+orang(X,_,_,pekerja_salon).
+/*** dan siapa yang pekerjaannya pekerja salon ***/
+kemungkinan_milik(X,Benda):-
+/*** menanyakan milik siapa dari benda ***/
+milik(X,Benda).
+/*** milik siapa benda tersebut ***/
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+* dicurigai semua orang yang memiliki senjata yang *
+* kerjanya mirip dengan senjata penyebab siti terbunuh. *
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+dicurigai(X):-
+/*** siapa yang dicurigai ***/
+terbunuh_dengan(siti,Senjata) ,
+/*** siti terbunuh dengan senjata apa ***/
+cara_kerja_mirip(Benda,Senjata) ,
+/*** benda apa yang cara kerja mirip dengan senjata ***/
+kemungkinan_milik(X,Benda).
+/*** kemungkinan milik siapa benda tersebut ***/
+/* * * * * * * * * * * * * * * * * * * * * * * * * *
+* dicurigai laki-laki yang selingkuh dengan siti. *
+* * * * * * * * * * * * * * * * * * * * * * * * * */
+dicurigai(X):-
+/*** mencurigai siapa yang selingkuh ***/
+motif(cemburu),
+/*** apakah motif cemburu***/
+orang(X,_,m,_),
+/*** orang siapa yang selingkuh dan sudah pasti gendernya laki_laki ***/
+selingkuh(siti,X).
+/*** siapa yang selingkuh dengan siti ***/
+/* * * * * * * * * * * * * * * * * * * * * * *
+* dicurigai perempuan yang selingkuh dengan *
+* laki-laki yang juga selingkuh dengan siti *
+* * * * * * * * * * * * * * * * * * * * * * */
+dicurigai(X):-
+/*** mencurigai siapa yang selingkuh ***/
+motif(cemburu),
+/*** apakah motifnya cemburu ***/
+orang(X,_,f,_),
+/*** siapa yang selingkuh ***/
+selingkuh(X,Lakilaki),
+/*** siapa yang selingkuh dengan laki-laki ***/
+selingkuh(siti,Lakilaki).
+/*** siti selingkuh dengan laki-laki ***/
+/* * * * * * * * * * * * * * * * * * * * * * * * * * *
+* dicurigai pencopet yang mempunyai motif uang. *
+* * * * * * * * * * * * * * * * * * * * * * * * * * */
+dicurigai(X):-
+/*** siapa yang dicurigai ***/
+motif(uang),
+/*** apakah motifnya Uang***/
+orang(X,_,_,pencopet).
+/*** siapa yang mempunyai pekerjaan pencopet ***/
+pembunuh(Pembunuh):-
+/*** siapakah pembunuhnya ***/
+orang(Pembunuh,_,_,_),
+/*** siapakah nama yang pembunuhnya ***/
+terbunuh(Terbunuh),
+
+Terbunuh <> Pembunuh, /* Bukan bunuh diri */
+/*** sudah ditentukan bahwa diterbunuh ***/
+dicurigai(Pembunuh),
+/*** siapa pembunuhnya***/
+ternodai(Pembunuh,Zat),
+/*** pembunuh ternodai dengan zat ***/
+ternodai(Terbunuh,Zat).
+/*** terbunuh ternodai dengan zat ***/
+GOAL
+pembunuh(X).
+/*** siapa kh pembunuh nya ? ***/
+/*** Hasilnya ialah x=budi ***/
+
+/*** 1. Budi Mempunyai Kaki palsu yang mirip dengan pentungan dimana siti terbunuh dengan pentungan ***/
+/*** 2. Siti dan Budi ternodai dengan darah dimana pembunuh dan terbunuh mempunyai zat yang sama ***/
+
+
