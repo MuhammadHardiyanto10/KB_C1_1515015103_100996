@@ -1,0 +1,33 @@
+predicates
+  factorial(unsigned,real) - procedure (i,o)
+/*** predikat factorial mempunyai deklarasi unsigned dan real dan procedure nya unsigned input sedangkan real output ***/
+  factorial(unsigned,real,unsigned,real) - procedure (i,o,i,i)
+/*** predikat factorial mempunyai deklarasi unsigned, real, unsigned, dan real dimana procedurenya unsigned berupa input, real berupa output, unsigned berupa input, dan real berupa input ***/
+
+/* Numbers likely to become large are declared as reals. */
+
+clauses
+  factorial(N,FactN):-
+/*** predikat factorial memberikan keterangan bahwa unsigned itu ialah N, sedangkan FactN ialah real***/
+
+	factorial(N,FactN,1,1.0).
+/*** predikat factorial memberikan keterangan bahwa unsigned ialah N, real ialah  FactN , Unsigned ialah 1 dan real ialah 1.0***/
+
+  factorial(N,FactN,N,FactN):-!.
+/*** predikat factorial menjelaskan bahwa N sama dengn N, dan FactN sama dengan Fact N***/
+
+  factorial(N,FactN,I,P):-
+/*** menjelaskan bahwa N sama dengan I dan FactN sama dengan P***/
+
+	NewI = I+1,
+/*** Menjelaskan NewI bernilai jika I+1 atau 1+1
+
+	NewP = P*NewI,
+/*** Menjelaskan NewP bernilai jika P * NewI atau 1.0*2***/
+
+	factorial(N, FactN, NewI, NewP).
+/*** Menjelaskan N,FactN, NewI, NewP ***/
+
+goal
+  factorial(3,X).
+Outputnya ialah X=6 dan 6 itu Merupakan dari FactN
